@@ -1,0 +1,27 @@
+{
+  "name": "makermap-api",
+  "version": "1.0.0",
+  "description": "API backend server (express, node, postgreSQL) hosted on heroku and built for testing. (URL: https://www.smashingmagazine.com/2020/04/express-api-backend-project-postgresql/ )",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/narkane/MakerMap-API.git"
+  },
+  "keywords": [
+    "API",
+    "server",
+    "MakerMap",
+    "Express",
+    "Node",
+    "PostgreSQL"
+  ],
+  "author": "John Thummel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/narkane/MakerMap-API/issues"
+  },
+  "homepage": "https://github.com/narkane/MakerMap-API#readme"
+}
