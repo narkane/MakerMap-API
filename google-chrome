@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Error</title>
+</head>
+<body>
+<pre>TypeError: Converting circular structure to JSON<br> &nbsp; &nbsp;--&gt; starting at object with constructor &#39;Socket&#39;<br> &nbsp; &nbsp;| &nbsp; &nbsp; property &#39;parser&#39; -&gt; object with constructor &#39;HTTPParser&#39;<br> &nbsp; &nbsp;--- property &#39;socket&#39; closes the circle<br> &nbsp; &nbsp;at JSON.stringify (&lt;anonymous&gt;)<br> &nbsp; &nbsp;at stringify (/home/hans/Dev/MakerMap-API/node_modules/express/lib/response.js:1123:12)<br> &nbsp; &nbsp;at ServerResponse.json (/home/hans/Dev/MakerMap-API/node_modules/express/lib/response.js:260:14)<br> &nbsp; &nbsp;at ServerResponse.send (/home/hans/Dev/MakerMap-API/node_modules/express/lib/response.js:158:21)<br> &nbsp; &nbsp;at file:///home/hans/Dev/MakerMap-API/src/server.js:25:14<br> &nbsp; &nbsp;at Layer.handle [as handle_request] (/home/hans/Dev/MakerMap-API/node_modules/express/lib/router/layer.js:95:5)<br> &nbsp; &nbsp;at next (/home/hans/Dev/MakerMap-API/node_modules/express/lib/router/route.js:137:13)<br> &nbsp; &nbsp;at Route.dispatch (/home/hans/Dev/MakerMap-API/node_modules/express/lib/router/route.js:112:3)<br> &nbsp; &nbsp;at Layer.handle [as handle_request] (/home/hans/Dev/MakerMap-API/node_modules/express/lib/router/layer.js:95:5)<br> &nbsp; &nbsp;at /home/hans/Dev/MakerMap-API/node_modules/express/lib/router/index.js:281:22</pre>
+</body>
+</html>
