@@ -119,10 +119,10 @@ router.delete("/delete", auth, async (req, res) => {
 // validating if user is logged in (with a boolean return)
 router.post("/tokenIsValid", async (req, res) => {
     try {
-        const token = req.header("x-auth-token");
+        const token = req.header("Authorization");
         if (!token) return res.json(false);
 
-        const verified = jwt.verify(token, process.env.JWT_SECRET);
+        const verified = jwt.verify(token.split(" ")[1], process.env.JWT_SECRET);
         if (!verified) return res.json(false);
 
         const user = await User.findById(verified.id);
