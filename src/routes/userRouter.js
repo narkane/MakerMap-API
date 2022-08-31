@@ -6,64 +6,100 @@ const auth = require("../middleware/auth");
 
 router.post("/register", async (req, res) => {
     try {
+        // Creating new user!! :O
+        const newUser = new User({
+            // username: username,
+            // password: passwordHash,
+            // firstName: firstName,
+            // lastName: lastName,
+            // email: email,
+        });
+        const savedUser = await newUser.save();
+        console.log('newUser._id: ' + newUser._id)
+        const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+        res.json({token, savedUser});
+    } catch (error) {
+        res.status(500).json({ err: error.message });
+    }
+});
+
+router.put("/edit", auth, async (req, res) => {
+    try {
         const { username, password, passwordCheck, firstName, lastName, email } = req.body;
+
+        userEdit = {};
 
         // validate
         // 400 = bad request
         // 500 = internal server error
         
-        if (!username || !password || !passwordCheck || !firstName || !lastName || !email) {
-            return res.status(400).json({ msg: "Not all required fields have been entered." });
-        }
+        console.log("PUT /edit: " + req.body)
 
-        // Checking DB for any existing user using the desired username
-        const existingUser = await User.findOne({ username: username });
-        if (existingUser) {
-            return res
-                .status(400)
-                .json({ msg: "An account with this username already exists. (Q,Q ) Sad day."});
-        }
+        // if (!username || !password || !passwordCheck || !firstName || !lastName || !email)) {
+        //     return res.status(400).json({ msg: "Not all required fields have been entered." });
+        // }
+
+        if (firstName) userEdit.firstName = firstName;
+        if (lastName) userEdit.lastName = lastName;
 
         // Checking to ensure password length is at least 8 characters
-        if (password.length < 8) {
+        if (password && password.length < 8) {
             return res
                 .status(400)
                 .json({ msg: "Your password needs to be at least 8 characters long."});
         }
 
         // Checking password entered vs the password checker
-        if (password !== passwordCheck) {
+        if (password && (password !== passwordCheck)) {
             return res
                 .status(400)
                 .json({ msg: "The passwords entered do not match. Please try again."});
         }
 
+        // Checking DB for any existing user using the desired username
+        if (username) {
+            console.log('ll')
+            const existingUsername = await User.findOne({ username: username });
+            if (existingUsername) {
+                return res
+                    .status(400)
+                    .json({ msg: "An account with this username already exists."});
+            }
+            userEdit.username = username;
+        }
+
         // Checking DB for any existing user using the desired email
-        const existingEmail = await User.findOne({ email: email });
-        if (existingEmail) {
-            return res
-                .status(400)
-                .json({ msg: "An account with this email already exists."});
+        if (email) {
+            const existingEmail = await User.findOne({ email: email });
+            if (existingEmail) {
+                return res
+                    .status(400)
+                    .json({ msg: "An account with this email already exists."});
+            }
+            userEdit.email = email;
         }
 
         // Using bcrypt to hash passwords - for sekuritty, duh :P
-        const salt = await bcrypt.genSalt();
-        const passwordHash = await bcrypt.hash(password, salt);
+        if (password && passwordCheck) {
+            const salt = await bcrypt.genSalt();
+            const passwordHash = await bcrypt.hash(password, salt);
 
-        // Creating new user!! :O
-        const newUser = new User({
-            username: username,
-            password: passwordHash,
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-        });
-        const savedUser = await newUser.save();
-        res.json(savedUser);
+            userEdit.password = passwordHash;
+        }
+
+        console.log(userEdit);
+
+        const editedUser = await User.findByIdAndUpdate(req.user, userEdit);
+        if (!editedUser) {
+            return res
+                .status(400)
+                .json({ msg: "An account with this username already exists. (Q,Q ) Sad day."});
+        }
+        res.json(editedUser);
     } catch (error) {
         res.status(500).json({ err: error.message });
     }
-});
+})
 
 router.post("/login",  async (req, res) => {
     try {
